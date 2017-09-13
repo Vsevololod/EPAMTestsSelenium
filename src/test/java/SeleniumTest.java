@@ -22,8 +22,8 @@ public class SeleniumTest {
 
         //WebElement element = webDriver.findElement(By.xpath("//*[@class='tile-menu']//*[@href='/solutions']"));
 
-        JavascriptExecutor js = (JavascriptExecutor) webDriver;
-        js.executeScript("alert('test')");
+        //JavascriptExecutor js = (JavascriptExecutor) webDriver;
+        //js.executeScript("alert('test')");
 
         //Assert.assertEquals(webDriver.getTitle(),"EPAM | Software Product Development Services");
         webDriver.close();
