@@ -1,11 +1,13 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
-import org.testng.asserts.SoftAssert;
+
+import java.lang.reflect.Method;
 
 
 /**
@@ -16,22 +18,33 @@ import org.testng.asserts.SoftAssert;
  * specify test name accordingly checking functionality
  */
 public class LoginTest {
-    private Assertion hardAssert = new Assertion();
-    private SoftAssert softAssert = new SoftAssert();
+    private WebDriver webDriver;
 
     public LoginTest(){
 
-        System.setProperty("webdriver.chrome.driver","chromedriver");
-        System.setProperty("webdriver.gecko.driver","geckodriver");
+
     }
 
-    @Test
+    @BeforeMethod
+    public void setUp(Method method){
+        webDriver = new FirefoxDriver();
+        System.setProperty("webdriver.chrome.driver","chromedriver");
+        System.setProperty("webdriver.gecko.driver","geckodriver");
+        System.out.println(method.getName());
+    }
+
+    @AfterMethod
+    public void stop(){
+        webDriver.close();
+    }
+
+    @Test(groups = "positive")
     public void positiveTest(){
         //Open test site by URL
-        WebDriver webDriver = new FirefoxDriver();
+
         webDriver.navigate().to("https://jdi-framework.github.io/tests/index.htm");
         //Assert Browser title
-        softAssert.assertEquals(webDriver.getTitle(),"Index page");
+        Assert.assertEquals(webDriver.getTitle(),"Index page");
 
 
         //Perform login
@@ -50,15 +63,15 @@ public class LoginTest {
 
         //Assert User name in the left-top side of screen that user is loggined
         WebElement userNameElement = webDriver.findElement(By.cssSelector(".profile-photo > span:nth-child(3)"));
-        softAssert.assertTrue(userNameElement.isDisplayed());
-        softAssert.assertEquals(userNameElement.getText(),"Piter Chailovskii");
+        Assert.assertTrue(userNameElement.isDisplayed());
+        Assert.assertEquals(userNameElement.getText(),"Piter Chailovskii");
 
 
         //Open Contact form
         WebElement contactForm = webDriver.findElement(By.cssSelector("ul.uui-navigation:nth-child(3) > li:nth-child(2) > a:nth-child(1)"));
         contactForm.click();
         //Assert Browser title
-        softAssert.assertEquals(webDriver.getTitle(),"Index page");
+        Assert.assertEquals(webDriver.getTitle(),"Index page");
 
 
         //Input your first and last name in text fields and click submit button
@@ -71,13 +84,8 @@ public class LoginTest {
         lName.sendKeys("Last Name");
         subButton.click();
 
-        softAssert.assertTrue(
+        Assert.assertTrue(
                 logPlace.findElement(By.cssSelector("li:first-child")).getText().contains("submit")
         );
-
-
-        webDriver.close();
-
-        softAssert.assertAll();
     }
 }

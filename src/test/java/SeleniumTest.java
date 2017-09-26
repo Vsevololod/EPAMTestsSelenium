@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 /**
  * Created by vse on 11.09.17.
@@ -12,21 +12,41 @@ import org.testng.annotations.Test;
  */
 
 
+
 public class SeleniumTest {
-    @Test
-    public void test2() {
-        System.setProperty("webdriver.gecko.driver","geckodriver");
+    private WebDriver webDriver;
 
-        WebDriver webDriver = new FirefoxDriver();
-        webDriver.navigate().to("https://www.epam.com/");
-
-        //WebElement element = webDriver.findElement(By.xpath("//*[@class='tile-menu']//*[@href='/solutions']"));
-
-        //JavascriptExecutor js = (JavascriptExecutor) webDriver;
-        //js.executeScript("alert('test')");
-
-        //Assert.assertEquals(webDriver.getTitle(),"EPAM | Software Product Development Services");
-        webDriver.close();
-
+    @BeforeSuite
+    public void setUpSuite() {
+        System.setProperty("webdriver.gecko.driver", "geckodriver");
     }
+
+
+    @BeforeTest
+    public void setUpTest() {
+    }
+
+
+    @BeforeMethod
+    public void setUp() {
+        webDriver = new FirefoxDriver();
+    }
+
+    @Test(groups = "main", invocationCount = 2, invocationTimeOut = 10000)
+    public void test2() {
+        webDriver.navigate().to("https://www.epam.com/");
+    }
+
+    @AfterMethod
+    public void after() {
+        webDriver.close();
+    }
+
+    @AfterSuite
+    public void exitSuite() {
+        if (webDriver.toString().contains("null")) {
+            webDriver.quit();
+        }
+    }
+
 }
