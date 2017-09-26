@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Smoke" verbose="1" parallel="false">
+    <test name="Base" >
+        <groups >
+            <run>
+                <include name="Smoke"/>
+                <exclude name="Regression"/>
+            </run>
+        </groups>
+        <packages>
+            <package name="base"/>
+        </packages>
+    </test>
+</suite>
